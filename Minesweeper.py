@@ -20,62 +20,15 @@ while(i<(len(grid_bomb_state)-9)):
     grid_bomb_state[i]=[grid_bomb_state[i],grid_bomb_state[i+1],grid_bomb_state[i+2],grid_bomb_state[i+3],grid_bomb_state[i+4],grid_bomb_state[i+5],grid_bomb_state[i+6],grid_bomb_state[i+7],grid_bomb_state[i+8],grid_bomb_state[i+9]]
     del grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1],grid_bomb_state[i+1]
     i+=1
-for i in range(0,10):
-    for j in range(0,10):
-        if(i==0):
-            if(j==0):
-                if(grid_bomb_state[i][j+1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j+1]):grid_number_state[i][j]+=1
-            elif(j==9):
-                if(grid_bomb_state[i][j-1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j-1]):grid_number_state[i][j]+=1
-            else:
-                if(grid_bomb_state[i][j-1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i][j+1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j-1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i+1][j+1]):grid_number_state[i][j]+=1
-        elif(i==9):
-            if(j==0):
-                if(grid_bomb_state[i][j+1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j+1]):grid_number_state[i][j]+=1
-            elif(j==9):
-                if(grid_bomb_state[i][j-1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j-1]):grid_number_state[i][j]+=1
-            else:
-                if(grid_bomb_state[i][j-1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i][j+1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j-1]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j]):grid_number_state[i][j]+=1
-                if(grid_bomb_state[i-1][j+1]):grid_number_state[i][j]+=1
-        elif(j==0):
-            if(grid_bomb_state[i-1][j]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i-1][j+1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i][j+1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j+1]):grid_number_state[i][j]+=1
-        elif(j==9):
-            if(grid_bomb_state[i-1][j]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i-1][j-1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i][j-1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j-1]):grid_number_state[i][j]+=1
-        else:
-            if(grid_bomb_state[i-1][j-1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i-1][j]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i-1][j+1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i][j-1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i][j+1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j-1]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j]):grid_number_state[i][j]+=1
-            if(grid_bomb_state[i+1][j+1]):grid_number_state[i][j]+=1
+for i in range(10):
+    for j in range(10):
+        for x in range(abs(i-1),i+2):
+            for y in range(abs(j-1),j+2):
+                if(x<10 and y<10):
+                    if((x,y)!=(i,j) and grid_bomb_state[x][y]):grid_number_state[i][j]+=1
 def draw():
-    for i in range(0,10):
-        for j in range(0,10):
+    for i in range(10):
+        for j in range(10):
             if(grid_color_state[i][j]=='lg'):pygame.draw.rect(screen,(170,215,81),pygame.Rect(i*45,(j*45),45,45))
             elif(grid_color_state[i][j]=='dg'):pygame.draw.rect(screen,(162,209,73),pygame.Rect(i*45,(j*45),45,45))
             elif(grid_color_state[i][j]=='lg0'):pygame.draw.rect(screen,(229,194,159),pygame.Rect(i*45,(j*45),45,45))
@@ -86,8 +39,8 @@ def draw():
             elif(grid_color_state[i][j][-1]!='0'):screen.blit(font.render(str(grid_number_state[i][j]),True,(0,0,0)),((i*45)+15,(j*45)+15))
     pygame.display.update()
 def check_win():
-    for i in range(0,10):
-        for j in range(0,10):
+    for i in range(10):
+        for j in range(10):
             if(bool(grid_bomb_state[i][j])!=grid_flag_state[i][j]):return False
             elif(grid_color_state[i][j][len(grid_color_state[i][j])-1]=='g'):return False
     return True
@@ -101,8 +54,8 @@ while True:
             if(event.button==pygame.BUTTON_LEFT):
                 if(grid_bomb_state[x//45][y//45]):
                     game=0
-                    for i in range(0,10):
-                        for j in range(0,10):
+                    for i in range(10):
+                        for j in range(10):
                             if(i==(x//45) and j==(y//45)):grid_color_state[i][j]+='c'
                             elif(grid_bomb_state[i][j]):grid_color_state[i][j]+='b'
                 else:
@@ -113,64 +66,16 @@ while True:
                         shown=[[x//45,y//45]]
                         while(modifications!=0):
                             modifications=0
-                            for i in range(0,10):
-                                for j in range(0,10):
-                                    if(grid_number_state[i][j]==0 and shown.count([i,j])):
-                                        if(i==0):
-                                            if(j==0):
-                                                if(grid_color_state[i][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j+1]+=str(grid_number_state[i][j+1]);modifications+=1;shown.append([i,j+1])
-                                                if(grid_color_state[i+1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j]+=str(grid_number_state[i+1][j]);modifications+=1;shown.append([i+1,j])
-                                                if(grid_color_state[i+1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j+1]+=str(grid_number_state[i+1][j+1]);modifications+=1;shown.append([i+1,j+1])
-                                            elif(j==9):
-                                                if(grid_color_state[i][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j-1]+=str(grid_number_state[i][j-1]);modifications+=1;shown.append([i,j-1])
-                                                if(grid_color_state[i+1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j]+=str(grid_number_state[i+1][j]);modifications+=1;shown.append([i+1,j])
-                                                if(grid_color_state[i+1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j-1]+=str(grid_number_state[i+1][j-1]);modifications+=1;shown.append([i+1,j-1])
-                                            else:
-                                                if(grid_color_state[i][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j-1]+=str(grid_number_state[i][j-1]);modifications+=1;shown.append([i,j-1])
-                                                if(grid_color_state[i][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j+1]+=str(grid_number_state[i][j+1]);modifications+=1;shown.append([i,j+1])
-                                                if(grid_color_state[i+1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j-1]+=str(grid_number_state[i+1][j-1]);modifications+=1;shown.append([i+1,j-1])
-                                                if(grid_color_state[i+1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j]+=str(grid_number_state[i+1][j]);modifications+=1;shown.append([i+1,j])
-                                                if(grid_color_state[i+1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j+1]+=str(grid_number_state[i+1][j+1]);modifications+=1;shown.append([i+1,j+1])
-                                        elif(i==9):
-                                            if(j==0):
-                                                if(grid_color_state[i][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j+1]+=str(grid_number_state[i][j+1]);modifications+=1;shown.append([i,j+1])
-                                                if(grid_color_state[i-1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j]+=str(grid_number_state[i-1][j]);modifications+=1;shown.append([i-1,j])
-                                                if(grid_color_state[i-1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j+1]+=str(grid_number_state[i-1][j+1]);modifications+=1;shown.append([i-1,j+1])
-                                            elif(j==9):
-                                                if(grid_color_state[i][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j-1]+=str(grid_number_state[i][j-1]);modifications+=1;shown.append([i,j-1])
-                                                if(grid_color_state[i-1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j]+=str(grid_number_state[i-1][j]);modifications+=1;shown.append([i-1,j])
-                                                if(grid_color_state[i-1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j-1]+=str(grid_number_state[i-1][j-1]);modifications+=1;shown.append([i-1,j-1])
-                                            else:
-                                                if(grid_color_state[i][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j-1]+=str(grid_number_state[i][j-1]);modifications+=1;shown.append([i,j-1])
-                                                if(grid_color_state[i][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j+1]+=str(grid_number_state[i][j+1]);modifications+=1;shown.append([i,j+1])
-                                                if(grid_color_state[i-1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j-1]+=str(grid_number_state[i-1][j-1]);modifications+=1;shown.append([i-1,j-1])
-                                                if(grid_color_state[i-1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j]+=str(grid_number_state[i-1][j]);modifications+=1;shown.append([i-1,j])
-                                                if(grid_color_state[i-1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j+1]+=str(grid_number_state[i-1][j+1]);modifications+=1;shown.append([i-1,j+1])
-                                        elif(j==0):
-                                            if(grid_color_state[i-1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j]+=str(grid_number_state[i-1][j]);modifications+=1;shown.append([i-1,j])
-                                            if(grid_color_state[i+1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j]+=str(grid_number_state[i+1][j]);modifications+=1;shown.append([i+1,j])
-                                            if(grid_color_state[i-1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j+1]+=str(grid_number_state[i-1][j+1]);modifications+=1;shown.append([i-1,j+1])
-                                            if(grid_color_state[i][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j+1]+=str(grid_number_state[i][j+1]);modifications+=1;shown.append([i,j+1])
-                                            if(grid_color_state[i+1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j+1]+=str(grid_number_state[i+1][j+1]);modifications+=1;shown.append([i+1,j+1])
-                                        elif(j==9):
-                                            if(grid_color_state[i-1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j]+=str(grid_number_state[i-1][j]);modifications+=1;shown.append([i-1,j])
-                                            if(grid_color_state[i+1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j]+=str(grid_number_state[i+1][j]);modifications+=1;shown.append([i+1,j])
-                                            if(grid_color_state[i-1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j-1]+=str(grid_number_state[i-1][j-1]);modifications+=1;shown.append([i-1,j-1])
-                                            if(grid_color_state[i][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j-1]+=str(grid_number_state[i][j-1]);modifications+=1;shown.append([i,j-1])
-                                            if(grid_color_state[i+1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j-1]+=str(grid_number_state[i+1][j-1]);modifications+=1;shown.append([i+1,j-1])
-                                        else:
-                                            if(grid_color_state[i-1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j-1]+=str(grid_number_state[i-1][j-1]);modifications+=1;shown.append([i-1,j-1])
-                                            if(grid_color_state[i-1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j]+=str(grid_number_state[i-1][j]);modifications+=1;shown.append([i-1,j])
-                                            if(grid_color_state[i-1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i-1][j+1]+=str(grid_number_state[i-1][j+1]);modifications+=1;shown.append([i-1,j+1])
-                                            if(grid_color_state[i][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j-1]+=str(grid_number_state[i][j-1]);modifications+=1;shown.append([i,j-1])
-                                            if(grid_color_state[i][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i][j+1]+=str(grid_number_state[i][j+1]);modifications+=1;shown.append([i,j+1])
-                                            if(grid_color_state[i+1][j-1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j-1]+=str(grid_number_state[i+1][j-1]);modifications+=1;shown.append([i+1,j-1])
-                                            if(grid_color_state[i+1][j][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j]+=str(grid_number_state[i+1][j]);modifications+=1;shown.append([i+1,j])
-                                            if(grid_color_state[i+1][j+1][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[i+1][j+1]+=str(grid_number_state[i+1][j+1]);modifications+=1;shown.append([i+1,j+1])
+                            for i in range(10):
+                                for j in range(10):
+                                    for x in range(abs(i-1),i+2):
+                                        for y in range(abs(j-1),j+2):
+                                            if(grid_number_state[i][j]==0 and shown.count([i,j]) and x<10 and y<10):
+                                                if((x,y)!=(i,j) and grid_color_state[x][y][-1] not in ['0','1','2','3','4','5','6','7','8']):grid_color_state[x][y]+=str(grid_number_state[x][y]);modifications+=1;shown.append([x,y])
             elif(event.button==pygame.BUTTON_RIGHT):
                 c=0
-                for i in range(0,10):
-                    for j in range(0,10):
+                for i in range(10):
+                    for j in range(10):
                         if(grid_flag_state[i][j]):c+=1
                 if(c<10 and grid_flag_state[(x//45)][y//45]==False):
                     grid_flag_state[(x//45)][y//45]=True
